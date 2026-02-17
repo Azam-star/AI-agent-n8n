@@ -1,0 +1,172 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "60468b01-562d-47bb-afaa-8dc119c42dab",
+      "name": "Telegram Trigger",
+      "webhookId": "b8779a52-4f37-432b-899a-359085192a1e",
+      "credentials": {
+        "telegramApi": {
+          "id": "wYtdeJlUXOJGpoPw",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "7a9cec7f-43a6-4294-b3f4-ccc472f3304b",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        208
+      ],
+      "id": "15331cea-31ab-4cb0-b890-d04ca9fa0530",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4RhND55ZfgoR5v4s",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        560,
+        0
+      ],
+      "id": "101c9841-90fc-475d-8b93-ce2e96a0bf7a",
+      "name": "Send a text message",
+      "webhookId": "d9bd4067-8eda-4322-8425-bd9a0013ddd7",
+      "credentials": {
+        "telegramApi": {
+          "id": "wYtdeJlUXOJGpoPw",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}",
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        496,
+        208
+      ],
+      "id": "ed307f64-043d-495f-9f25-f39b2c26b28e",
+      "name": "Get many messages in Gmail",
+      "webhookId": "8f3e0665-4ce8-48c5-bab2-93a8dc9587db",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "dXcwpGVOFqwzkWdP",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "f91d943e-5f42-44b7-82ad-121a29e1e420",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d499f98bda1b80abba3bd3d2582fe61282d08329ed9f42906558472237df1f07"
+  },
+  "id": "TJvFsoojpED91tUQ",
+  "tags": []
+}
