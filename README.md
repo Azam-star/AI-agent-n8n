@@ -83,4 +83,3 @@ The most advanced version. It combines email access with **Google Calendar** int
 
 ---
 
-**Would you like me to create a specific "System Prompt" for your AI Agent to make it act more like a professional secretary?**
